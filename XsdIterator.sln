@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XsdIterator", "src\XsdIterator\XsdIterator.csproj", "{4E08D5F8-CF2E-42E5-A04D-E7073B9A99F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XsdIterator.Tests", "tests\XsdIterator.Tests\XsdIterator.Tests.csproj", "{F759D59B-BEE4-4D4D-BAE6-12CEDA922A66}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XsdIterator.Tests", "tests\XsdIterator.Tests\XsdIterator.Tests.csproj", "{0EE2F5BB-985A-4897-965D-E8506A2DBF41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{4E08D5F8-CF2E-42E5-A04D-E7073B9A99F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E08D5F8-CF2E-42E5-A04D-E7073B9A99F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E08D5F8-CF2E-42E5-A04D-E7073B9A99F2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F759D59B-BEE4-4D4D-BAE6-12CEDA922A66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F759D59B-BEE4-4D4D-BAE6-12CEDA922A66}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F759D59B-BEE4-4D4D-BAE6-12CEDA922A66}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F759D59B-BEE4-4D4D-BAE6-12CEDA922A66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EE2F5BB-985A-4897-965D-E8506A2DBF41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EE2F5BB-985A-4897-965D-E8506A2DBF41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EE2F5BB-985A-4897-965D-E8506A2DBF41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EE2F5BB-985A-4897-965D-E8506A2DBF41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
