@@ -56,14 +56,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefaultXsdIteratorTests.cs" />
+    <Compile Include="DefaultXmlIteratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestXmlSchemaVisitor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Samples\sample.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\XsdIterator\XsdIterator.csproj">
+      <Project>{4e08d5f8-cf2e-42e5-a04d-e7073b9a99f2}</Project>
+      <Name>XsdIterator</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

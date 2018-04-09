@@ -1,0 +1,118 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".Generated.cs" #>
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Schema;
+
+namespace XsdIterator 
+{
+    /// <summary>
+    /// Extension method for XmlSchema subtypes, which selects right method
+    /// of IXmlSchemaIterator to be called for particular object
+    /// </summary>
+    public static class XsdSchemaObjectVisitorExtension
+    {
+        public static void Accept(this object obj, IXmlSchemaIterator iterator)
+        {
+			var type = obj.GetType();				
+			<#
+			var types = new[] { 
+								"XmlSchemaElement",		
+								"XmlSchemaComplexType",	
+								"XmlSchemaSimpleType",															
+								"XmlSchemaSequence",
+								"XmlSchemaChoice",
+								"XmlSchemaSet",
+								"XmlSchemaObject",
+								"XmlSchema",
+								"XmlSchemaParticle",						
+								"XmlSchemaGroup",								
+								"XmlSchemaGroupRef",																	
+								"XmlSchemaAny",																
+								"XmlSchemaAttribute",																								
+								"XmlSchemaComplexContentExtension",																						
+								"XmlSchemaObjectCollection",
+								"XmlSchemaSimpleContentExtension",								
+								"XmlSchemaType",
+								"XmlSchemaAppInfo",
+								"XmlSchemaDocumentation",
+								"XmlSchemaAnnotation"								
+								 };
+			foreach(var tp in types)
+			{
+			#>							
+			if(type == typeof(<#= tp #>))
+			{
+				var typedObj = obj as <#= tp #>;
+				iterator.IterateThrough(typedObj);
+				return;
+			}
+<#
+			}#>
+        }
+    }
+
+    /// <summary>
+    /// Interface for xsd schema item processor
+    /// </summary>
+	public interface IXmlSchemaProcessor
+    {
+	<#
+	foreach(var type in types)
+	{
+	#>
+    bool StartProcessing(<#= type #> obj);
+        void EndProcessing(<#= type #> obj);		
+	<#
+	}#>	
+	    void StartProcessingChoiceBranch(int nOfBranch, XmlSchemaAnnotated obj);
+	    void EndProcessingChoiceBranch(int nOfBranch);
+	    void StartProcessingSubstitutionGroup(string name);
+        void EndProcessingSubstitutionGroup(string name);
+    }
+
+	public interface IXmlSchemaIterator
+    {
+	<#
+	foreach(var type in types)
+	{
+	#>
+	void IterateThrough(<#= type #> obj);		
+	<#
+	}
+	#>               
+    }
+
+	/// <summary>
+    /// Default implementation of IXmlSchemaProcessor which does nothing. In most cases
+    /// you'll need to inherit your processor from this class and override only required
+    /// methods
+    /// </summary>
+	public class XmlSchemaDefaultProcessor : IXmlSchemaProcessor
+	{
+	<#
+	foreach(var type in types)
+	{
+	#>
+	public virtual bool StartProcessing(<#= type #> obj){return true;}
+		public virtual void EndProcessing(<#= type #> obj){}
+	<#
+	}
+	#>
+    public virtual void StartProcessingChoiceBranch(int nOfBranch, XmlSchemaAnnotated obj){}
+		public virtual void EndProcessingChoiceBranch(int nOfBranch){}
+	    public virtual void StartProcessingSubstitutionGroup(string name){}
+        public virtual void EndProcessingSubstitutionGroup(string name){}
+	}
+
+}
