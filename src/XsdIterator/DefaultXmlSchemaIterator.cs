@@ -1,26 +1,30 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.Schema;
 
 namespace XsdIterator
 {
     /// <summary>
     /// Default implementation of IXmlSchemaIterator. It will fit most of your needs, but you can 
-    /// inherit your own and custmize
+    /// inherit your own and customize
     /// </summary>
     public class DefaultXmlSchemaIterator : IXmlSchemaIterator
     {
+        #region Fields
+
         /// <summary>
         /// A final visitor, which does actual work for each schema particle
         /// </summary>
-        private IXmlSchemaProcessor _functionalVisitor;
+        private readonly IXmlSchemaProcessor _functionalVisitor;
 
         /// <summary>
         /// XmlSchemaSet which wi iterate through
         /// </summary>
-        private XmlSchemaSet _schemaSet;
+        private readonly XmlSchemaSet _schemaSet;
+
+        #endregion
+
+        #region .ctor
 
         public DefaultXmlSchemaIterator(XmlSchemaSet schemaSet, IXmlSchemaProcessor functionalVisitor)
         {
@@ -28,12 +32,18 @@ namespace XsdIterator
             _schemaSet = schemaSet;
         }
 
+        #endregion
+
+        #region Implementation of IXmlSchemaIterator
+
         public void IterateThrough(XmlSchemaSet obj)
         {
             if (_functionalVisitor.StartProcessing(obj))
             {
                 foreach (XmlSchema schema in obj.Schemas())
+                {
                     schema.Accept(this);
+                }
             }
             _functionalVisitor.EndProcessing(obj);
         }
@@ -51,7 +61,9 @@ namespace XsdIterator
             {
                 var en = obj.Elements.Values.GetEnumerator();
                 while (en.MoveNext())
+                {
                     en.Current.Accept(this);
+                }
             }
             _functionalVisitor.EndProcessing(obj);
         }
@@ -74,7 +86,9 @@ namespace XsdIterator
                     List<XmlSchemaElement> sgList;
 
                     if (obj.IsAbstract)
+                    {
                         sgList = sg.ToList();
+                    }
                     else
                     {
                         sgList = sg.ToList();
@@ -83,7 +97,10 @@ namespace XsdIterator
 
                     _functionalVisitor.StartProcessingSubstitutionGroup(obj.Name);
                     foreach (var element in sgList)
+                    {
                         element.Accept(this);
+                    }
+
                     _functionalVisitor.EndProcessingSubstitutionGroup(obj.Name);
                 }
 
@@ -91,11 +108,12 @@ namespace XsdIterator
                 {
                     if (_functionalVisitor.StartProcessing(obj))
                     {
-                        if (obj.Annotation != null)
-                            obj.Annotation.Accept(this);
+                        obj.Annotation?.Accept(this);
 
                         if (obj.SchemaTypeName.Namespace != XmlSchema.Namespace)
+                        {
                             obj.ElementSchemaType.Accept(this);
+                        }
                     }
 
                     _functionalVisitor.EndProcessing(obj);
@@ -119,7 +137,9 @@ namespace XsdIterator
             {
                 var en = obj.Items.GetEnumerator();
                 while (en.MoveNext())
+                {
                     en.Current.Accept(this);
+                }
             }
             _functionalVisitor.EndProcessing(obj);
         }
@@ -130,7 +150,7 @@ namespace XsdIterator
             {
 
                 var en = obj.Items.GetEnumerator();
-                int branch = 0;
+                var branch = 0;
                 while (en.MoveNext())
                 {
                     _functionalVisitor.StartProcessingChoiceBranch(++branch, en.Current as XmlSchemaAnnotated);
@@ -150,7 +170,9 @@ namespace XsdIterator
                 {
                     var en = obj.Attributes.GetEnumerator();
                     while (en.MoveNext())
+                    {
                         en.Current.Accept(this);
+                    }
                 }
 
                 if (obj.ContentModel != null)
@@ -162,7 +184,9 @@ namespace XsdIterator
                         {
                             var en = complexContent.Attributes.GetEnumerator();
                             while (en.MoveNext())
+                            {
                                 en.Current.Accept(this);
+                            }
                         }
 
                         var baseType = XmlSchemaExtensions.GetComplexType(_schemaSet, complexContent.BaseTypeName);
@@ -171,8 +195,7 @@ namespace XsdIterator
                     }
 
                     var simpleContent = obj.ContentModel.Content as XmlSchemaSimpleContentExtension;
-                    if (simpleContent != null)
-                        simpleContent.Accept(this);
+                    simpleContent?.Accept(this);
                 }
                 else if (obj.Particle != null)
                 {
@@ -204,8 +227,7 @@ namespace XsdIterator
             {
                 var group = XmlSchemaExtensions.GetGroup(_schemaSet, obj.RefName);
 
-                if (group != null)
-                    group.Accept(this);
+                @group?.Accept(this);
             }
 
             _functionalVisitor.EndProcessing(obj);
@@ -223,8 +245,7 @@ namespace XsdIterator
         {
             if (_functionalVisitor.StartProcessing(obj))
             {
-                if (obj.AttributeSchemaType != null)
-                    obj.AttributeSchemaType.Accept(this);
+                obj.AttributeSchemaType?.Accept(this);
             }
             _functionalVisitor.EndProcessing(obj);
         }
@@ -233,11 +254,8 @@ namespace XsdIterator
         {
             if (_functionalVisitor.StartProcessing(obj))
             {
-                if (obj.Attributes != null)
-                    obj.Attributes.Accept(this);
-
-                if (obj.Particle != null)
-                    obj.Particle.Accept(this);
+                obj.Attributes?.Accept(this);
+                obj.Particle?.Accept(this);
             }
             _functionalVisitor.EndProcessing(obj);
         }
@@ -259,19 +277,23 @@ namespace XsdIterator
                 {
                     var en = obj.Attributes.GetEnumerator();
                     while (en.MoveNext())
+                    {
                         en.Current.Accept(this);
+                    }
                 }
 
                 var baseType = XmlSchemaExtensions.GetComplexType(_schemaSet, obj.BaseTypeName);
 
                 if (baseType != null && obj.BaseTypeName.Namespace != XmlSchema.Namespace)
+                {
                     baseType.Accept(this);
+                }
             }
 
             _functionalVisitor.EndProcessing(obj);
         }
 
-        public void IterateThrough(System.Xml.Schema.XmlSchemaType obj)
+        public void IterateThrough(XmlSchemaType obj)
         {
             if (_functionalVisitor.StartProcessing(obj))
             {
@@ -300,10 +322,14 @@ namespace XsdIterator
             {
                 var en = obj.Items.GetEnumerator();
                 while (en.MoveNext())
+                {
                     en.Current.Accept(this);
+                }
             }
             _functionalVisitor.EndProcessing(obj);
         }
+
+        #endregion
     }
 
 

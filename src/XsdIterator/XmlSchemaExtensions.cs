@@ -1,7 +1,5 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 
@@ -16,7 +14,9 @@ namespace XsdIterator
         {
             var en = table.Values.GetEnumerator();
             while (en.MoveNext())
+            {
                 yield return (XmlSchemaElement)en.Current;
+            }
         }
 
         public static XmlSchemaElement GetGlobalElementByName(this XmlSchemaSet schemaSet, XmlQualifiedName name)
@@ -26,7 +26,9 @@ namespace XsdIterator
             {
                 var el = (XmlSchemaElement)en.Current;
                 if (el.QualifiedName.Name == name.Name)
+                {
                     return el;
+                }
             }
 
             return null;
@@ -39,16 +41,24 @@ namespace XsdIterator
             {
                 var el = (XmlSchemaElement)en.Current;
                 if (el.SubstitutionGroup.Name == element.QualifiedName.Name)
+                {
                     yield return el;
+                }
             }
         }
 
         public static XmlSchemaGroup GetGroup(this XmlSchemaSet schemaSet, XmlQualifiedName name)
         {
             foreach (XmlSchema schema in schemaSet.Schemas())
+            {
                 foreach (XmlSchemaGroup group in schema.Groups.Values)
+                {
                     if (group.QualifiedName.Name == name.Name)
+                    {
                         return group;
+                    }
+                }
+            }
 
             return null;
         }
@@ -62,14 +72,18 @@ namespace XsdIterator
                 if (currentAsComplex != null)
                 {
                     if (currentAsComplex.QualifiedName.Name == name.Name)
+                    {
                         return currentAsComplex;
+                    }
                 }
                 else
                 {
                     var currentAsSimple = en.Current as XmlSchemaSimpleType;
 
                     if (currentAsSimple != null && currentAsSimple.QualifiedName.Name == name.Name)
+                    {
                         return currentAsSimple;
+                    }
                 }
             }
 
@@ -79,7 +93,9 @@ namespace XsdIterator
         public static XmlSchemaDocumentation GetDocumentation(this XmlSchemaAnnotated node, string source, string lang)
         {
             if (node.Annotation == null)
+            {
                 return null;
+            }
 
             var en = node.Annotation.Items.GetEnumerator();
 
@@ -89,7 +105,9 @@ namespace XsdIterator
                 if (doc != null)
                 {
                     if (doc.Source == source && doc.Language == lang)
+                    {
                         return doc;
+                    }
                 }
             }
 
@@ -99,7 +117,9 @@ namespace XsdIterator
         public static XmlSchemaAppInfo GetAppinfo(this XmlSchemaAnnotated node, string source)
         {
             if (node.Annotation == null)
+            {
                 return null;
+            }
 
             var en = node.Annotation.Items.GetEnumerator();
 
@@ -109,7 +129,9 @@ namespace XsdIterator
                 if (ai != null)
                 {
                     if (ai.Source == source)
+                    {
                         return ai;
+                    }
                 }
             }
 
@@ -121,22 +143,27 @@ namespace XsdIterator
         private static int GetMinMaxOccValue(XmlSchemaAnnotated element, string attributeName)
         {
             if (element.Annotation == null)
+            {
                 return -1;
+            }
 
             var en = element.Annotation.Items.GetEnumerator();
 
             while (en.MoveNext())
             {
-                var ai = en.Current as XmlSchemaAppInfo;
-                if (ai != null)
+                if (en.Current is XmlSchemaAppInfo ai)
                 {
                     if (ai.Source == "minOcc")
                     {
                         if (ai.Markup == null || !ai.Markup.Any())
+                        {
                             return -1;
-                        int rValue = -1;
-                        if (int.TryParse(ai.Markup[0].Value, out rValue))
+                        }
+
+                        if (int.TryParse(ai.Markup[0].Value, out var rValue))
+                        {
                             return rValue;
+                        }
                     }
                 }
             }

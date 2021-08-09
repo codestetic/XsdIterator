@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Schema;
 using XsdIterator;
 
@@ -11,11 +7,11 @@ namespace XsdIteratorTests
     /// <summary>
     /// Simple visitor which only puts all xml schema elements names into one row
     /// </summary>
-    class TestXmlSchemaVisitor : XmlSchemaDefaultProcessor
+    public class TestXmlSchemaVisitor : XmlSchemaDefaultProcessor
     {
         public string AllElementsString => _sb.ToString();
 
-        private StringBuilder _sb = new StringBuilder();
+        private readonly StringBuilder _sb = new();
 
         public override bool StartProcessing(XmlSchemaElement obj)
         {
