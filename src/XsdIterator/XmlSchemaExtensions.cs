@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
@@ -192,6 +193,37 @@ namespace XsdIterator
             }
 
             annotation.Items.Insert(0, ai);
+        }
+
+        public static (int min, int max) GetOccurrence(this XmlSchemaElement element)
+        {
+            var min = (int)element.MinOccurs;
+            var max = element.MinOccurs < int.MaxValue ? (int)element.MaxOccurs : int.MaxValue;
+
+            return (min, max);
+        }
+
+        public static (int min, int max) GetOccurrence(this XmlSchemaAttribute attribute)
+        {
+            var min = 1;
+            var max = 1;
+
+            switch (attribute.Use)
+            {
+                case XmlSchemaUse.None:
+                    break;
+                case XmlSchemaUse.Optional:
+                    min = 0;
+                    break;
+                case XmlSchemaUse.Prohibited:
+                    break;
+                case XmlSchemaUse.Required:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return (min, max);
         }
     }
 }
