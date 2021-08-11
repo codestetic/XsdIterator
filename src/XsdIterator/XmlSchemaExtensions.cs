@@ -198,7 +198,7 @@ namespace XsdIterator
         public static (int min, int max) GetOccurrence(this XmlSchemaElement element)
         {
             var min = (int)element.MinOccurs;
-            var max = element.MinOccurs < int.MaxValue ? (int)element.MaxOccurs : int.MaxValue;
+            var max = element.MaxOccurs < int.MaxValue ? (int)element.MaxOccurs : int.MaxValue;
 
             return (min, max);
         }
