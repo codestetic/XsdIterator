@@ -1,9 +1,9 @@
 using System.Xml;
 using System.Xml.Schema;
-using XsdIterator;
+using XsdIteratorTests;
 using Xunit;
 
-namespace XsdIteratorTests
+namespace XsdIterator.Tests
 {
     /// <summary>
     /// Test behaviour of DefaultXmlSchemaIterator
