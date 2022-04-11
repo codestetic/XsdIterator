@@ -1,11 +1,4 @@
 ﻿
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Schema;
 
 namespace XsdIterator 
@@ -14,7 +7,7 @@ namespace XsdIterator
     /// Extension method for XmlSchema subtypes, which selects right method
     /// of IXmlSchemaIterator to be called for particular object
     /// </summary>
-    public static class XsdSchemaObjectVisitorExtension
+    public static class XmlSchemaVisitorExtension
     {
         public static void Accept(this object obj, IXmlSchemaIterator iterator)
         {
