@@ -11,148 +11,71 @@ namespace XsdIterator
     {
         public static void Accept(this object obj, IXmlSchemaIterator iterator)
         {
-			var type = obj.GetType();				
-										
-			if(type == typeof(XmlSchemaElement))
+			var type = obj.GetType();
+			switch(obj)
 			{
-				var typedObj = obj as XmlSchemaElement;
-				iterator.IterateThrough(typedObj);
-				return;
+				case XmlSchema item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaElement item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaComplexType item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaSimpleType item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaSequence item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaChoice item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaSet item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaGroup item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaGroupRef item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaAny item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaAttribute item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaComplexContentExtension item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaObjectCollection item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaSimpleContentExtension item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaType item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaAppInfo item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaDocumentation item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaAnnotation item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaParticle item:
+					iterator.IterateThrough(item);
+					break;
+				case XmlSchemaObject item:
+					iterator.IterateThrough(item);
+					break;
 			}
-							
-			if(type == typeof(XmlSchemaComplexType))
-			{
-				var typedObj = obj as XmlSchemaComplexType;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-							
-			if(type == typeof(XmlSchemaSimpleType))
-			{
-				var typedObj = obj as XmlSchemaSimpleType;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-							
-			if(type == typeof(XmlSchemaSequence))
-			{
-				var typedObj = obj as XmlSchemaSequence;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-							
-			if(type == typeof(XmlSchemaChoice))
-			{
-				var typedObj = obj as XmlSchemaChoice;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-							
-			if(type == typeof(XmlSchemaSet))
-			{
-				var typedObj = obj as XmlSchemaSet;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-							
-			if(type == typeof(XmlSchemaObject))
-			{
-				var typedObj = obj as XmlSchemaObject;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-							
-			if(type == typeof(XmlSchema))
-			{
-				var typedObj = obj as XmlSchema;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-							
-			if(type == typeof(XmlSchemaParticle))
-			{
-				var typedObj = obj as XmlSchemaParticle;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-							
-			if(type == typeof(XmlSchemaGroup))
-			{
-				var typedObj = obj as XmlSchemaGroup;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-							
-			if(type == typeof(XmlSchemaGroupRef))
-			{
-				var typedObj = obj as XmlSchemaGroupRef;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-							
-			if(type == typeof(XmlSchemaAny))
-			{
-				var typedObj = obj as XmlSchemaAny;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-							
-			if(type == typeof(XmlSchemaAttribute))
-			{
-				var typedObj = obj as XmlSchemaAttribute;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-							
-			if(type == typeof(XmlSchemaComplexContentExtension))
-			{
-				var typedObj = obj as XmlSchemaComplexContentExtension;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-							
-			if(type == typeof(XmlSchemaObjectCollection))
-			{
-				var typedObj = obj as XmlSchemaObjectCollection;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-							
-			if(type == typeof(XmlSchemaSimpleContentExtension))
-			{
-				var typedObj = obj as XmlSchemaSimpleContentExtension;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-							
-			if(type == typeof(XmlSchemaType))
-			{
-				var typedObj = obj as XmlSchemaType;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-							
-			if(type == typeof(XmlSchemaAppInfo))
-			{
-				var typedObj = obj as XmlSchemaAppInfo;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-							
-			if(type == typeof(XmlSchemaDocumentation))
-			{
-				var typedObj = obj as XmlSchemaDocumentation;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-							
-			if(type == typeof(XmlSchemaAnnotation))
-			{
-				var typedObj = obj as XmlSchemaAnnotation;
-				iterator.IterateThrough(typedObj);
-				return;
-			}
-        }
+		}
     }
 
     /// <summary>
@@ -160,6 +83,8 @@ namespace XsdIterator
     /// </summary>
 	public interface IXmlSchemaProcessor
     {
+	    bool StartProcessing(XmlSchema obj);
+        void EndProcessing(XmlSchema obj);		
 	    bool StartProcessing(XmlSchemaElement obj);
         void EndProcessing(XmlSchemaElement obj);		
 	    bool StartProcessing(XmlSchemaComplexType obj);
@@ -172,12 +97,6 @@ namespace XsdIterator
         void EndProcessing(XmlSchemaChoice obj);		
 	    bool StartProcessing(XmlSchemaSet obj);
         void EndProcessing(XmlSchemaSet obj);		
-	    bool StartProcessing(XmlSchemaObject obj);
-        void EndProcessing(XmlSchemaObject obj);		
-	    bool StartProcessing(XmlSchema obj);
-        void EndProcessing(XmlSchema obj);		
-	    bool StartProcessing(XmlSchemaParticle obj);
-        void EndProcessing(XmlSchemaParticle obj);		
 	    bool StartProcessing(XmlSchemaGroup obj);
         void EndProcessing(XmlSchemaGroup obj);		
 	    bool StartProcessing(XmlSchemaGroupRef obj);
@@ -200,6 +119,10 @@ namespace XsdIterator
         void EndProcessing(XmlSchemaDocumentation obj);		
 	    bool StartProcessing(XmlSchemaAnnotation obj);
         void EndProcessing(XmlSchemaAnnotation obj);		
+	    bool StartProcessing(XmlSchemaParticle obj);
+        void EndProcessing(XmlSchemaParticle obj);		
+	    bool StartProcessing(XmlSchemaObject obj);
+        void EndProcessing(XmlSchemaObject obj);		
 		
 	    void StartProcessingChoiceBranch(int nOfBranch, XmlSchemaAnnotated obj);
 	    void EndProcessingChoiceBranch(int nOfBranch);
@@ -209,15 +132,13 @@ namespace XsdIterator
 
 	public interface IXmlSchemaIterator
     {
+		void IterateThrough(XmlSchema obj);		
 		void IterateThrough(XmlSchemaElement obj);		
 		void IterateThrough(XmlSchemaComplexType obj);		
 		void IterateThrough(XmlSchemaSimpleType obj);		
 		void IterateThrough(XmlSchemaSequence obj);		
 		void IterateThrough(XmlSchemaChoice obj);		
 		void IterateThrough(XmlSchemaSet obj);		
-		void IterateThrough(XmlSchemaObject obj);		
-		void IterateThrough(XmlSchema obj);		
-		void IterateThrough(XmlSchemaParticle obj);		
 		void IterateThrough(XmlSchemaGroup obj);		
 		void IterateThrough(XmlSchemaGroupRef obj);		
 		void IterateThrough(XmlSchemaAny obj);		
@@ -229,6 +150,8 @@ namespace XsdIterator
 		void IterateThrough(XmlSchemaAppInfo obj);		
 		void IterateThrough(XmlSchemaDocumentation obj);		
 		void IterateThrough(XmlSchemaAnnotation obj);		
+		void IterateThrough(XmlSchemaParticle obj);		
+		void IterateThrough(XmlSchemaObject obj);		
 	               
     }
 
@@ -239,6 +162,8 @@ namespace XsdIterator
     /// </summary>
 	public class XmlSchemaDefaultProcessor : IXmlSchemaProcessor
 	{
+		public virtual bool StartProcessing(XmlSchema obj){return true;}
+		public virtual void EndProcessing(XmlSchema obj){}
 		public virtual bool StartProcessing(XmlSchemaElement obj){return true;}
 		public virtual void EndProcessing(XmlSchemaElement obj){}
 		public virtual bool StartProcessing(XmlSchemaComplexType obj){return true;}
@@ -251,12 +176,6 @@ namespace XsdIterator
 		public virtual void EndProcessing(XmlSchemaChoice obj){}
 		public virtual bool StartProcessing(XmlSchemaSet obj){return true;}
 		public virtual void EndProcessing(XmlSchemaSet obj){}
-		public virtual bool StartProcessing(XmlSchemaObject obj){return true;}
-		public virtual void EndProcessing(XmlSchemaObject obj){}
-		public virtual bool StartProcessing(XmlSchema obj){return true;}
-		public virtual void EndProcessing(XmlSchema obj){}
-		public virtual bool StartProcessing(XmlSchemaParticle obj){return true;}
-		public virtual void EndProcessing(XmlSchemaParticle obj){}
 		public virtual bool StartProcessing(XmlSchemaGroup obj){return true;}
 		public virtual void EndProcessing(XmlSchemaGroup obj){}
 		public virtual bool StartProcessing(XmlSchemaGroupRef obj){return true;}
@@ -279,6 +198,10 @@ namespace XsdIterator
 		public virtual void EndProcessing(XmlSchemaDocumentation obj){}
 		public virtual bool StartProcessing(XmlSchemaAnnotation obj){return true;}
 		public virtual void EndProcessing(XmlSchemaAnnotation obj){}
+		public virtual bool StartProcessing(XmlSchemaParticle obj){return true;}
+		public virtual void EndProcessing(XmlSchemaParticle obj){}
+		public virtual bool StartProcessing(XmlSchemaObject obj){return true;}
+		public virtual void EndProcessing(XmlSchemaObject obj){}
 	    public virtual void StartProcessingChoiceBranch(int nOfBranch, XmlSchemaAnnotated obj){}
 		public virtual void EndProcessingChoiceBranch(int nOfBranch){}
 	    public virtual void StartProcessingSubstitutionGroup(string name){}

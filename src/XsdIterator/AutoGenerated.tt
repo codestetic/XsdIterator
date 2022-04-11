@@ -17,18 +17,18 @@ namespace XsdIterator
     {
         public static void Accept(this object obj, IXmlSchemaIterator iterator)
         {
-			var type = obj.GetType();				
-			<#
-			var types = new[] { 
+			var type = obj.GetType();
+			switch(obj)
+			{
+<#
+			var types = new[] { 			
+								"XmlSchema",
 								"XmlSchemaElement",		
 								"XmlSchemaComplexType",	
 								"XmlSchemaSimpleType",															
 								"XmlSchemaSequence",
 								"XmlSchemaChoice",
 								"XmlSchemaSet",
-								"XmlSchemaObject",
-								"XmlSchema",
-								"XmlSchemaParticle",						
 								"XmlSchemaGroup",								
 								"XmlSchemaGroupRef",																	
 								"XmlSchemaAny",																
@@ -39,20 +39,19 @@ namespace XsdIterator
 								"XmlSchemaType",
 								"XmlSchemaAppInfo",
 								"XmlSchemaDocumentation",
-								"XmlSchemaAnnotation"								
+								"XmlSchemaAnnotation",								
+								"XmlSchemaParticle",						
+								"XmlSchemaObject",
 								 };
 			foreach(var tp in types)
 			{
-			#>							
-			if(type == typeof(<#= tp #>))
-			{
-				var typedObj = obj as <#= tp #>;
-				iterator.IterateThrough(typedObj);
-				return;
+			#>
+				case <#= tp #> item:
+					iterator.IterateThrough(item);
+					break;
+<#			}#>
 			}
-<#
-			}#>
-        }
+		}
     }
 
     /// <summary>
