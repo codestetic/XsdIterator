@@ -20,30 +20,37 @@ namespace XsdIterator
             }
         }
 
+        /// <summary>
+        /// Returns a global element with a specified name
+        /// </summary>
         public static XmlSchemaElement GetGlobalElementByName(this XmlSchemaSet schemaSet, XmlQualifiedName name)
         {
-            var en = schemaSet.GlobalElements.Values.GetEnumerator();
-            while (en.MoveNext())
+            var enumerator = schemaSet.GlobalElements.Values.GetEnumerator();
+            
+            while (enumerator.MoveNext())
             {
-                var el = (XmlSchemaElement)en.Current;
-                if (el.QualifiedName.Name == name.Name)
+                if (enumerator.Current is XmlSchemaElement element
+                    && element.QualifiedName.Name == name.Name)
                 {
-                    return el;
+                    return element;
                 }
             }
 
             return null;
         }
 
+        /// <summary>
+        /// Returns IEnumerable of all elements that form a substitution group for a given element
+        /// </summary>
         public static IEnumerable<XmlSchemaElement> GetSubstitutionGroupElements(this XmlSchemaSet schemaSet, XmlSchemaElement element)
         {
             var en = schemaSet.GlobalElements.Values.GetEnumerator();
             while (en.MoveNext())
             {
-                var el = (XmlSchemaElement)en.Current;
-                if (el.SubstitutionGroup.Name == element.QualifiedName.Name)
+                if (en.Current is XmlSchemaElement substitutionGroupElement 
+                    && substitutionGroupElement.SubstitutionGroup.Name == element.QualifiedName.Name)
                 {
-                    yield return el;
+                    yield return substitutionGroupElement;
                 }
             }
         }
@@ -64,26 +71,27 @@ namespace XsdIterator
             return null;
         }
 
-        public static XmlSchemaType GetComplexType(this XmlSchemaSet schemaSet, XmlQualifiedName name)
+        /// <summary>
+        /// Returns complex or simple type with a specified name
+        /// </summary>
+        public static XmlSchemaType GetType(this XmlSchemaSet schemaSet, XmlQualifiedName name)
         {
             var en = schemaSet.GlobalTypes.Values.GetEnumerator();
             while (en.MoveNext())
             {
-                var currentAsComplex = en.Current as XmlSchemaComplexType;
-                if (currentAsComplex != null)
+                if (en.Current is XmlSchemaComplexType complexType)
                 {
-                    if (currentAsComplex.QualifiedName.Name == name.Name)
+                    if (complexType.QualifiedName.Name == name.Name)
                     {
-                        return currentAsComplex;
+                        return complexType;
                     }
                 }
                 else
                 {
-                    var currentAsSimple = en.Current as XmlSchemaSimpleType;
-
-                    if (currentAsSimple != null && currentAsSimple.QualifiedName.Name == name.Name)
+                    if (en.Current is XmlSchemaSimpleType simpleType 
+                        && simpleType.QualifiedName.Name == name.Name)
                     {
-                        return currentAsSimple;
+                        return simpleType;
                     }
                 }
             }
@@ -102,20 +110,17 @@ namespace XsdIterator
 
             while (en.MoveNext())
             {
-                var doc = en.Current as XmlSchemaDocumentation;
-                if (doc != null)
+                if (en.Current is XmlSchemaDocumentation doc
+                    && doc.Source == source && doc.Language == lang)
                 {
-                    if (doc.Source == source && doc.Language == lang)
-                    {
-                        return doc;
-                    }
+                    return doc;
                 }
             }
 
             return null;
         }
 
-        public static XmlSchemaAppInfo GetAppinfo(this XmlSchemaAnnotated node, string source)
+        public static XmlSchemaAppInfo GetAppInfo(this XmlSchemaAnnotated node, string source)
         {
             if (node.Annotation == null)
             {
@@ -126,63 +131,17 @@ namespace XsdIterator
 
             while (en.MoveNext())
             {
-                var ai = en.Current as XmlSchemaAppInfo;
-                if (ai != null)
+                if (en.Current is XmlSchemaAppInfo ai
+                    && ai.Source == source)
                 {
-                    if (ai.Source == source)
-                    {
-                        return ai;
-                    }
+                    return ai;
                 }
             }
 
             return null;
         }
 
-
-
-        private static int GetMinMaxOccValue(XmlSchemaAnnotated element, string attributeName)
-        {
-            if (element.Annotation == null)
-            {
-                return -1;
-            }
-
-            var en = element.Annotation.Items.GetEnumerator();
-
-            while (en.MoveNext())
-            {
-                if (en.Current is XmlSchemaAppInfo ai)
-                {
-                    if (ai.Source == "minOcc")
-                    {
-                        if (ai.Markup == null || !ai.Markup.Any())
-                        {
-                            return -1;
-                        }
-
-                        if (int.TryParse(ai.Markup[0].Value, out var rValue))
-                        {
-                            return rValue;
-                        }
-                    }
-                }
-            }
-
-            return -1;
-        }
-
-        public static int MinOcc(this XmlSchemaAnnotated element)
-        {
-            return GetMinMaxOccValue(element, "minOcc");
-        }
-
-        public static int MaxOcc(this XmlSchemaAnnotated element)
-        {
-            return GetMinMaxOccValue(element, "maxOcc");
-        }
-
-        public static void AddAppinfo(this XmlSchemaElement element, XmlSchemaAppInfo ai)
+        public static void AddAppInfo(this XmlSchemaElement element, XmlSchemaAppInfo appInfo)
         {
             var annotation = element.Annotation;
 
@@ -192,10 +151,10 @@ namespace XsdIterator
                 element.Annotation = annotation;
             }
 
-            annotation.Items.Insert(0, ai);
+            annotation.Items.Insert(0, appInfo);
         }
 
-        public static (int min, int max) GetOccurrence(this XmlSchemaElement element)
+        public static (int Min, int Max) GetOccurrence(this XmlSchemaElement element)
         {
             var min = (int)element.MinOccurs;
             var max = element.MaxOccurs < int.MaxValue ? (int)element.MaxOccurs : int.MaxValue;
@@ -203,7 +162,7 @@ namespace XsdIterator
             return (min, max);
         }
 
-        public static (int min, int max) GetOccurrence(this XmlSchemaAttribute attribute)
+        public static (int Min, int Max) GetOccurrence(this XmlSchemaAttribute attribute)
         {
             var min = 1;
             var max = 1;

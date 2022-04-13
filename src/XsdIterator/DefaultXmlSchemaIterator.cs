@@ -189,7 +189,7 @@ namespace XsdIterator
                             }
                         }
 
-                        var baseType = XmlSchemaExtensions.GetComplexType(_schemaSet, complexContent.BaseTypeName);
+                        var baseType = XmlSchemaExtensions.GetType(_schemaSet, complexContent.BaseTypeName);
                         baseType.Accept(this);
                         complexContent.Accept(this);
                     }
@@ -282,7 +282,7 @@ namespace XsdIterator
                     }
                 }
 
-                var baseType = XmlSchemaExtensions.GetComplexType(_schemaSet, obj.BaseTypeName);
+                var baseType = XmlSchemaExtensions.GetType(_schemaSet, obj.BaseTypeName);
 
                 if (baseType != null && obj.BaseTypeName.Namespace != XmlSchema.Namespace)
                 {
